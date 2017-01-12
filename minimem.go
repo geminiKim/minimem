@@ -1,0 +1,5 @@
+package minimem
+
+
+func main() {
+}
