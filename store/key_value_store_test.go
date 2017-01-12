@@ -1,4 +1,4 @@
-package minimem
+package store
 
 import (
 	"testing"
@@ -7,7 +7,7 @@ import (
 
 func Test_put(t *testing.T) {
 	store := NewKeyValueStore()
-	store.put("key", "value")
+	store.set("key", "value")
 	value := store.get("key")
 
 	assert.Equal(t, "value", value)

@@ -1,10 +1,10 @@
-package minimem
+package store
 
 type keyValueStore struct {
 	keyValueMap map[string]string
 }
 
-func (store keyValueStore) put(key string, value string) {
+func (store keyValueStore) set(key string, value string) {
 	store.keyValueMap[key] = value
 }
 
