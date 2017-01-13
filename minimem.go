@@ -14,7 +14,7 @@ func main() {
 }
 
 func httpServerStart(port string, handler *store.StoreHttpHandler) {
-	server := mux.NewRouter() // HTTP 요청 멀티플렉서 생성
+	server := mux.NewRouter()
 	server.HandleFunc("/store/map/set", handler.Set)
 	server.HandleFunc("/store/map/get/{key}", handler.Get)
 	log.Fatal(http.ListenAndServe(":" + port, server))
