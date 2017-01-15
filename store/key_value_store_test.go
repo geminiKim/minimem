@@ -5,7 +5,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func Test_put(t *testing.T) {
+func Test_shouldBeSuccessSetAndGet(t *testing.T) {
 	store := NewKeyValueStore()
 	store.set("key", "value")
 	value := store.get("key")
