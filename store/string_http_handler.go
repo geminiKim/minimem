@@ -6,11 +6,11 @@ import (
 	"github.com/gorilla/mux"
 )
 
-type StoreHttpHandler struct {
-	store *keyValueStore
+type StringHttpHandler struct {
+	store *stringStore
 }
 
-func (handler StoreHttpHandler) Set(response http.ResponseWriter, request *http.Request) {
+func (handler StringHttpHandler) Set(response http.ResponseWriter, request *http.Request) {
 	decoder := json.NewDecoder(request.Body)
 
 	var paramMap map[string]string
@@ -22,13 +22,13 @@ func (handler StoreHttpHandler) Set(response http.ResponseWriter, request *http.
 	handler.store.set(paramMap["key"], paramMap["value"])
 }
 
-func (handler StoreHttpHandler) Get(response http.ResponseWriter, request *http.Request) {
+func (handler StringHttpHandler) Get(response http.ResponseWriter, request *http.Request) {
 	vars := mux.Vars(request)
 	response.Write([]byte(handler.store.get(vars["key"])))
 }
 
-func NewStoreHttpHandler(store *keyValueStore) *StoreHttpHandler {
-	handler := new(StoreHttpHandler)
+func NewStringHttpHandler(store *stringStore) *StringHttpHandler {
+	handler := new(StringHttpHandler)
 	handler.store = store
 	return handler
 }

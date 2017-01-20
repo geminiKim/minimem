@@ -6,7 +6,7 @@ import (
 )
 
 func Test_shouldBeSuccessSetAndGet(t *testing.T) {
-	store := NewKeyValueStore()
+	store := NewStringStore()
 	store.set("key", "value")
 	value := store.get("key")
 
