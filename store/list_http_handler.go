@@ -51,7 +51,10 @@ func (handler ListHttpHandler) RangeGet(response http.ResponseWriter, request *h
 	vars := mux.Vars(request)
 	startIndex, _ := strconv.Atoi(vars["startIndex"])
 	endIndex, _ := strconv.Atoi(vars["endIndex"])
-	response.Write([]byte(handler.store.rangeGet(vars["key"], startIndex, endIndex)))
+
+	list := handler.store.rangeGet(vars["key"], startIndex, endIndex)
+	result, _ := json.Marshal(list)
+	response.Write(result)
 }
 
 func NewListHttpHandler(store *listStore) *ListHttpHandler {
