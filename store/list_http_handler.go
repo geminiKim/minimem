@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"encoding/json"
 	"strconv"
+	"io/ioutil"
 )
 
 type ListHttpHandler struct {
@@ -12,14 +13,9 @@ type ListHttpHandler struct {
 }
 
 func (handler ListHttpHandler) LeftPush(response http.ResponseWriter, request *http.Request) {
-	decoder := json.NewDecoder(request.Body)
-	var paramMap map[string]string
-	err := decoder.Decode(&paramMap)
-
-	if err != nil {
-		panic(err)
-	}
-	handler.store.leftPush(paramMap["key"], paramMap["value"])
+	vars := mux.Vars(request)
+	body, _ := ioutil.ReadAll(request.Body)
+	handler.store.leftPush(vars["key"], string(body))
 }
 func (handler ListHttpHandler) LeftPop(response http.ResponseWriter, request *http.Request) {
 	vars := mux.Vars(request)
@@ -30,14 +26,9 @@ func (handler ListHttpHandler) LeftPeek(response http.ResponseWriter, request *h
 	response.Write([]byte(handler.store.leftPeek(vars["key"])))
 }
 func (handler ListHttpHandler) RightPush(response http.ResponseWriter, request *http.Request) {
-	decoder := json.NewDecoder(request.Body)
-	var paramMap map[string]string
-	err := decoder.Decode(&paramMap)
-
-	if err != nil {
-		panic(err)
-	}
-	handler.store.rightPush(paramMap["key"], paramMap["value"])
+	vars := mux.Vars(request)
+	body, _ := ioutil.ReadAll(request.Body)
+	handler.store.rightPush(vars["key"], string(body))
 }
 func (handler ListHttpHandler) RightPop(response http.ResponseWriter, request *http.Request) {
 	vars := mux.Vars(request)
@@ -49,10 +40,10 @@ func (handler ListHttpHandler) RightPeek(response http.ResponseWriter, request *
 }
 func (handler ListHttpHandler) RangeGet(response http.ResponseWriter, request *http.Request) {
 	vars := mux.Vars(request)
-	startIndex, _ := strconv.Atoi(vars["startIndex"])
-	endIndex, _ := strconv.Atoi(vars["endIndex"])
+	index, _ := strconv.Atoi(vars["index"])
+	count, _ := strconv.Atoi(vars["count"])
 
-	list := handler.store.rangeGet(vars["key"], startIndex, endIndex)
+	list := handler.store.rangeGet(vars["key"], index, count)
 	result, _ := json.Marshal(list)
 	response.Write(result)
 }

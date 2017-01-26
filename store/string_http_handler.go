@@ -2,8 +2,8 @@ package store
 
 import (
 	"net/http"
-	"encoding/json"
 	"github.com/gorilla/mux"
+	"io/ioutil"
 )
 
 type StringHttpHandler struct {
@@ -11,15 +11,9 @@ type StringHttpHandler struct {
 }
 
 func (handler StringHttpHandler) Set(response http.ResponseWriter, request *http.Request) {
-	decoder := json.NewDecoder(request.Body)
-
-	var paramMap map[string]string
-	err := decoder.Decode(&paramMap)
-
-	if err != nil {
-	panic(err)
-	}
-	handler.store.set(paramMap["key"], paramMap["value"])
+	vars := mux.Vars(request)
+	body, _ := ioutil.ReadAll(request.Body)
+	handler.store.set(vars["key"], string(body))
 }
 
 func (handler StringHttpHandler) Get(response http.ResponseWriter, request *http.Request) {

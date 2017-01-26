@@ -19,6 +19,9 @@ func (store *listStore) leftPush(key string, value string) {
 }
 
 func (store *listStore) leftPop(key string) string {
+	if len(store.listMap) == 0 {
+		return ""
+	}
 	list := store.listMap[key]
 	value := list[0]
 	store.listMap[key] = list[1:]
@@ -26,6 +29,9 @@ func (store *listStore) leftPop(key string) string {
 }
 
 func (store *listStore) leftPeek(key string) string {
+	if len(store.listMap) == 0 {
+		return ""
+	}
 	return store.listMap[key][0]
 }
 
@@ -34,6 +40,9 @@ func (store *listStore) rightPush(key string, value string) {
 }
 
 func (store *listStore) rightPop(key string) string {
+	if len(store.listMap) == 0 {
+		return ""
+	}
 	list := store.listMap[key]
 	value := list[len(list) - 1]
 	store.listMap[key] = list[:len(list) - 1]
@@ -41,6 +50,9 @@ func (store *listStore) rightPop(key string) string {
 }
 
 func (store *listStore) rightPeek(key string) string {
+	if len(store.listMap) == 0 {
+		return ""
+	}
 	return store.listMap[key][len(store.listMap[key])-1]
 }
 
