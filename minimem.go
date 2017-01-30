@@ -33,8 +33,8 @@ func httpServerStart(port string, stringHandler *store.StringHttpHandler, listHa
 	server.HandleFunc("/list/{key}/rightPop", listHandler.RightPop).Methods("GET")
 	server.HandleFunc("/list/{key}/rangeGet/{index}/{count}", listHandler.RangeGet).Methods("GET")
 
-	server.HandleFunc("/hash/{key}", hashHandler.Set).Methods("POST")
-	server.HandleFunc("/hash/{key}", hashHandler.Get).Methods("GET")
+	server.HandleFunc("/hash/{key}/{field}", hashHandler.Set).Methods("POST")
+	server.HandleFunc("/hash/{key}/{field}", hashHandler.Get).Methods("GET")
 
 	log.Fatal(http.ListenAndServe(":" + port, server))
 }
