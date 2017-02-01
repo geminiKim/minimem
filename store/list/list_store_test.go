@@ -1,4 +1,4 @@
-package store
+package list
 
 import (
 	"github.com/stretchr/testify/assert"
@@ -38,9 +38,7 @@ func Test_listRangeGetToString(t *testing.T) {
 
 	list := store.rangeGet("key", 0, 2)
 
-	assert.Equal(t, "value0", list[0])
-	assert.Equal(t, "value1", list[1])
 	result, _ := json.Marshal(list)
-	assert.Equal(t, "[\"value0\",\"value1\"]", string(result))
+	assert.Equal(t, "[\"value0\",\"value1\",\"value2\"]", string(result))
 
 }

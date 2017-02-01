@@ -1,4 +1,4 @@
-package store
+package strings
 
 type stringStore struct {
 	stringMap map[string]string

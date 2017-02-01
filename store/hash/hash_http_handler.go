@@ -1,4 +1,4 @@
-package store
+package hash
 
 import (
 	"github.com/gorilla/mux"

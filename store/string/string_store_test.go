@@ -1,4 +1,4 @@
-package store
+package strings
 
 import (
 	"testing"

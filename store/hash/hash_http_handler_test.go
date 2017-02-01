@@ -1,4 +1,4 @@
-package store
+package hash
 
 import (
 	"net/http/httptest"
@@ -20,8 +20,7 @@ func Test_SetByHashHttpHandler(t *testing.T) {
 	server.HandleFunc("/hash/{key}/{field}", storeHandler.Set).Methods("POST")
 	server.ServeHTTP(recorder, request)
 
-	hashValue := store.get("hello", "world")
-	assert.Equal(t, "HelloWorld", hashValue)
+	assert.Equal(t, "HelloWorld", store.get("hello", "world"))
 	assert.Equal(t, http.StatusOK, recorder.Code)
 }
 

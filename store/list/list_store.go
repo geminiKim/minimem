@@ -1,4 +1,4 @@
-package store
+package list
 
 type listStore struct {
 	listMap map[string][]string
@@ -19,7 +19,7 @@ func (store *listStore) leftPush(key string, value string) {
 }
 
 func (store *listStore) leftPop(key string) string {
-	if len(store.listMap) == 0 {
+	if len(store.listMap[key]) == 0 {
 		return ""
 	}
 	list := store.listMap[key]
@@ -40,7 +40,7 @@ func (store *listStore) rightPush(key string, value string) {
 }
 
 func (store *listStore) rightPop(key string) string {
-	if len(store.listMap) == 0 {
+	if len(store.listMap[key]) == 0 {
 		return ""
 	}
 	list := store.listMap[key]
@@ -57,5 +57,5 @@ func (store *listStore) rightPeek(key string) string {
 }
 
 func (store *listStore) rangeGet(key string, index int, count int) []string {
-	return store.listMap[key][index:count]
+	return store.listMap[key][index:count + 1]
 }

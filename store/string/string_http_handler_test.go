@@ -1,4 +1,4 @@
-package store
+package strings
 
 import (
 	"net/http/httptest"
@@ -20,8 +20,7 @@ func Test_SetByStringHttpHandler(t *testing.T) {
 	server.HandleFunc("/string/{key}", storeHandler.Set).Methods("POST")
 	server.ServeHTTP(recorder, request)
 
-	hashValue := store.get("hello")
-	assert.Equal(t, "HelloWorld", hashValue)
+	assert.Equal(t, "HelloWorld", store.get("hello"))
 	assert.Equal(t, http.StatusOK, recorder.Code)
 }
 

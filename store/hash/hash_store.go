@@ -1,4 +1,4 @@
-package store
+package hash
 
 type hashStore struct {
 	hashMap map[string]map[string]string

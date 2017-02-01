@@ -4,23 +4,25 @@ import (
 	"net/http"
 	"log"
 	"github.com/gorilla/mux"
-	"github.com/geminikim/minimem/store"
+	"github.com/geminikim/minimem/store/list"
+	"github.com/geminikim/minimem/store/hash"
+	"github.com/geminikim/minimem/store/string"
 )
 
 func main() {
-	stringStore := store.NewStringStore()
-	stringHandler := store.NewStringHttpHandler(stringStore)
+	stringStore := strings.NewStringStore()
+	stringHandler := strings.NewStringHttpHandler(stringStore)
 
-	listStore := store.NewListStore()
-	listHandler := store.NewListHttpHandler(listStore)
+	listStore := list.NewListStore()
+	listHandler := list.NewListHttpHandler(listStore)
 
-	hashStore := store.NewHashStore()
-	hashHandler := store.NewHashHttpHandler(hashStore)
+	hashStore := hash.NewHashStore()
+	hashHandler := hash.NewHashHttpHandler(hashStore)
 
 	httpServerStart("8011", stringHandler, listHandler, hashHandler)
 }
 
-func httpServerStart(port string, stringHandler *store.StringHttpHandler, listHandler *store.ListHttpHandler, hashHandler *store.HashHttpHandler) {
+func httpServerStart(port string, stringHandler *strings.StringHttpHandler, listHandler *list.ListHttpHandler, hashHandler *hash.HashHttpHandler) {
 	server := mux.NewRouter()
 	server.HandleFunc("/string/{key}", stringHandler.Set).Methods("POST")
 	server.HandleFunc("/string/{key}", stringHandler.Get).Methods("GET")
@@ -31,7 +33,7 @@ func httpServerStart(port string, stringHandler *store.StringHttpHandler, listHa
 	server.HandleFunc("/list/{key}/rightPush", listHandler.RightPush).Methods("POST")
 	server.HandleFunc("/list/{key}/rightPeek", listHandler.RightPeek).Methods("GET")
 	server.HandleFunc("/list/{key}/rightPop", listHandler.RightPop).Methods("GET")
-	server.HandleFunc("/list/{key}/rangeGet/{index}/{count}", listHandler.RangeGet).Methods("GET")
+	server.HandleFunc("/list/{key}/{index}/{count}", listHandler.RangeGet).Methods("GET")
 
 	server.HandleFunc("/hash/{key}/{field}", hashHandler.Set).Methods("POST")
 	server.HandleFunc("/hash/{key}/{field}", hashHandler.Get).Methods("GET")
