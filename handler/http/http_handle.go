@@ -1,8 +1,8 @@
-package store
+package handler
 
 import "net/http"
 
-type Handle struct {
+type HttpHandle struct {
 	Method string
 	Path string
 	Function func(response http.ResponseWriter, request *http.Request)
