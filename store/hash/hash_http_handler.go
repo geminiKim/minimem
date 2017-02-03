@@ -4,7 +4,7 @@ import (
 	"github.com/gorilla/mux"
 	"net/http"
 	"io/ioutil"
-	"github.com/geminikim/minimem/store"
+	"github.com/geminikim/minimem/handler/http"
 )
 
 type HashHttpHandler struct {
@@ -28,8 +28,8 @@ func (handler HashHttpHandler) Get(response http.ResponseWriter, request *http.R
 	response.Write([]byte(handler.store.get(vars["key"], vars["field"])))
 }
 
-func (handler HashHttpHandler) GetHandles() []store.Handle {
-	return []store.Handle {
+func (handler HashHttpHandler) GetHandles() []handler.HttpHandle {
+	return []handler.HttpHandle {
 		{"POST", "/hash/{key}/{field}", handler.Set},
 		{"GET", "/hash/{key}/{field}", handler.Get},
 	}
