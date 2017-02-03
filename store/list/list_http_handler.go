@@ -6,10 +6,17 @@ import (
 	"encoding/json"
 	"strconv"
 	"io/ioutil"
+	"github.com/geminikim/minimem/handler/http"
 )
 
 type ListHttpHandler struct {
 	store *listStore
+}
+
+func NewListHttpHandler(store *listStore) *ListHttpHandler {
+	handler := new(ListHttpHandler)
+	handler.store = store
+	return handler
 }
 
 func (handler ListHttpHandler) LeftPush(response http.ResponseWriter, request *http.Request) {
@@ -48,8 +55,14 @@ func (handler ListHttpHandler) RangeGet(response http.ResponseWriter, request *h
 	response.Write(result)
 }
 
-func NewListHttpHandler(store *listStore) *ListHttpHandler {
-	handler := new(ListHttpHandler)
-	handler.store = store
-	return handler
+func (handler ListHttpHandler) GetHandles() []handler.HttpHandle {
+	return []handler.HttpHandle {
+		{"POST", "/list/{key}/leftPush", handler.LeftPush},
+		{"GET", "/list/{key}/leftPeek", handler.LeftPeek},
+		{"GET", "/list/{key}/leftPop", handler.LeftPop},
+		{"POST", "/list/{key}/rightPush", handler.RightPush},
+		{"GET", "/list/{key}/rightPeek", handler.RightPeek},
+		{"GET", "/list/{key}/rightPop", handler.RightPop},
+		{"POST", "/list/{key}/{index}/{count}", handler.RangeGet},
+	}
 }
