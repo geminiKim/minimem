@@ -4,10 +4,17 @@ import (
 	"github.com/gorilla/mux"
 	"net/http"
 	"io/ioutil"
+	"github.com/geminikim/minimem/store"
 )
 
 type HashHttpHandler struct {
 	store *hashStore
+}
+
+func NewHashHttpHandler(store *hashStore) *HashHttpHandler {
+	handler := new(HashHttpHandler)
+	handler.store = store
+	return handler
 }
 
 func (handler HashHttpHandler) Set(response http.ResponseWriter, request *http.Request) {
@@ -21,8 +28,9 @@ func (handler HashHttpHandler) Get(response http.ResponseWriter, request *http.R
 	response.Write([]byte(handler.store.get(vars["key"], vars["field"])))
 }
 
-func NewHashHttpHandler(store *hashStore) *HashHttpHandler {
-	handler := new(HashHttpHandler)
-	handler.store = store
-	return handler
+func (handler HashHttpHandler) GetHandles() []store.Handle {
+	return []store.Handle {
+		{"POST", "/hash/{key}/{field}", handler.Set},
+		{"GET", "/hash/{key}/{field}", handler.Get},
+	}
 }

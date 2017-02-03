@@ -7,6 +7,7 @@ import (
 	"github.com/geminikim/minimem/store/hash"
 	"github.com/geminikim/minimem/store/string"
 	"net/http"
+	"github.com/geminikim/minimem/store"
 )
 
 func main() {
@@ -21,7 +22,7 @@ func main() {
 
 	httpServerStart("8011", stringHandler, listHandler, hashHandler)
 }
-func httpServerStart(port string, stringHandler *strings.StringHttpHandler, listHandler *list.ListHttpHandler, hashHandler *hash.HashHttpHandler) {
+func httpServerStart(port string, stringHandler store.HttpHandler, listHandler *list.ListHttpHandler, hashHandler *hash.HashHttpHandler) {
 	server := mux.NewRouter()
 
 	for _, handle := range stringHandler.GetHandles() {
@@ -38,6 +39,10 @@ func httpServerStart(port string, stringHandler *strings.StringHttpHandler, list
 
 	server.HandleFunc("/hash/{key}/{field}", hashHandler.Set).Methods("POST")
 	server.HandleFunc("/hash/{key}/{field}", hashHandler.Get).Methods("GET")
+
+	for _, handle := range stringHandler.GetHandles() {
+		server.HandleFunc(handle.Path, handle.Function).Methods(handle.Method)
+	}
 
 	log.Fatal(http.ListenAndServe(":" + port, server))
 }

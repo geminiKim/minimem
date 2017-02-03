@@ -11,6 +11,12 @@ type StringHttpHandler struct {
 	store *stringStore
 }
 
+func NewStringHttpHandler(store *stringStore) *StringHttpHandler {
+	handler := new(StringHttpHandler)
+	handler.store = store
+	return handler
+}
+
 func (handler StringHttpHandler) Set(response http.ResponseWriter, request *http.Request) {
 	vars := mux.Vars(request)
 	body, _ := ioutil.ReadAll(request.Body)
@@ -27,10 +33,4 @@ func (handler StringHttpHandler) GetHandles() []store.Handle {
 		{"POST", "/string/{key}", handler.Set},
 		{"GET", "/string/{key}", handler.Get},
 	}
-}
-
-func NewStringHttpHandler(store *stringStore) *StringHttpHandler {
-	handler := new(StringHttpHandler)
-	handler.store = store
-	return handler
 }
