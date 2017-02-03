@@ -1,12 +1,12 @@
 package main
 
 import (
-	"net/http"
 	"log"
 	"github.com/gorilla/mux"
 	"github.com/geminikim/minimem/store/list"
 	"github.com/geminikim/minimem/store/hash"
 	"github.com/geminikim/minimem/store/string"
+	"net/http"
 )
 
 func main() {
@@ -21,11 +21,12 @@ func main() {
 
 	httpServerStart("8011", stringHandler, listHandler, hashHandler)
 }
-
 func httpServerStart(port string, stringHandler *strings.StringHttpHandler, listHandler *list.ListHttpHandler, hashHandler *hash.HashHttpHandler) {
 	server := mux.NewRouter()
-	server.HandleFunc("/string/{key}", stringHandler.Set).Methods("POST")
-	server.HandleFunc("/string/{key}", stringHandler.Get).Methods("GET")
+
+	for _, handle := range stringHandler.GetHandles() {
+		server.HandleFunc(handle.Path, handle.Function).Methods(handle.Method)
+	}
 
 	server.HandleFunc("/list/{key}/leftPush", listHandler.LeftPush).Methods("POST")
 	server.HandleFunc("/list/{key}/leftPeek", listHandler.LeftPeek).Methods("GET")
