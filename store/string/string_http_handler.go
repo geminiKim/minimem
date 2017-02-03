@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"github.com/gorilla/mux"
 	"io/ioutil"
-	"github.com/geminikim/minimem/store/handler"
+	"github.com/geminikim/minimem/store"
 )
 
 type StringHttpHandler struct {

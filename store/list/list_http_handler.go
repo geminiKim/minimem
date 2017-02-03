@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"strconv"
 	"io/ioutil"
-	"github.com/geminikim/minimem/store/handler"
+	"github.com/geminikim/minimem/store"
 )
 
 type ListHttpHandler struct {

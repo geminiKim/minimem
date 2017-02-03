@@ -7,7 +7,7 @@ import (
 	"github.com/geminikim/minimem/store/hash"
 	"github.com/geminikim/minimem/store/string"
 	"net/http"
-	"github.com/geminikim/minimem/store/handler"
+	"github.com/geminikim/minimem/store"
 )
 
 func main() {
