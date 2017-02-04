@@ -8,13 +8,14 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/gorilla/mux"
 	"github.com/geminikim/minimem/store"
+	"github.com/geminikim/minimem/constant"
 )
 
 func Test_LeftPushByListHttpHandler(t *testing.T) {
 	manager := NewListStoreManager()
 	handler := NewListHttpHandler(manager)
 
-	request, _ := http.NewRequest("POST", "/list/hello/leftPush", bytes.NewBufferString("HelloWorld"))
+	request, _ := http.NewRequest(http.MethodPost, "/list/hello/leftPush", bytes.NewBufferString("HelloWorld"))
 	recorder := httptest.NewRecorder()
 
 	server := mux.NewRouter()
@@ -25,7 +26,7 @@ func Test_LeftPushByListHttpHandler(t *testing.T) {
 
 
 	value := make(map[string]string)
-	value["key"] = "hello"
+	value[constant.KEY] = "hello"
 
 	assert.Equal(t, "HelloWorld", manager.Process(store.Message{"LEFT_POP", value}))
 	assert.Equal(t, http.StatusOK, recorder.Code)
@@ -36,11 +37,11 @@ func Test_LeftPeekByListHttpHandler(t *testing.T) {
 	handler := NewListHttpHandler(manager)
 
 	value := make(map[string]string)
-	value["key"] = "hello"
-	value["value"] = "HelloWorld"
-	manager.Process(store.Message{"LEFT_PUSH", value})
+	value[constant.KEY] = "hello"
+	value[constant.VALUE] = "HelloWorld"
+	manager.Process(store.Message{constant.LEFT_PUSH, value})
 
-	request, _ := http.NewRequest("GET", "/list/hello/leftPeek", bytes.NewBufferString("HelloWorld"))
+	request, _ := http.NewRequest(http.MethodGet, "/list/hello/leftPeek", bytes.NewBufferString("HelloWorld"))
 	recorder := httptest.NewRecorder()
 
 	server := mux.NewRouter()
@@ -58,11 +59,11 @@ func Test_LeftPopByListHttpHandler(t *testing.T) {
 	handler := NewListHttpHandler(manager)
 
 	value := make(map[string]string)
-	value["key"] = "hello"
-	value["value"] = "HelloWorld"
-	manager.Process(store.Message{"LEFT_PUSH", value})
+	value[constant.KEY] = "hello"
+	value[constant.VALUE] = "HelloWorld"
+	manager.Process(store.Message{constant.LEFT_PUSH, value})
 
-	request, _ := http.NewRequest("GET", "/list/hello/leftPop", bytes.NewBufferString("HelloWorld"))
+	request, _ := http.NewRequest(http.MethodGet, "/list/hello/leftPop", bytes.NewBufferString("HelloWorld"))
 	recorder := httptest.NewRecorder()
 
 	server := mux.NewRouter()
@@ -79,7 +80,7 @@ func Test_RightPushByListHttpHandler(t *testing.T) {
 	manager := NewListStoreManager()
 	handler := NewListHttpHandler(manager)
 
-	request, _ := http.NewRequest("POST", "/list/hello/rightPush", bytes.NewBufferString("HelloWorld"))
+	request, _ := http.NewRequest(http.MethodPost, "/list/hello/rightPush", bytes.NewBufferString("HelloWorld"))
 	recorder := httptest.NewRecorder()
 
 	server := mux.NewRouter()
@@ -89,7 +90,7 @@ func Test_RightPushByListHttpHandler(t *testing.T) {
 	server.ServeHTTP(recorder, request)
 
 	value := make(map[string]string)
-	value["key"] = "hello"
+	value[constant.KEY] = "hello"
 
 	assert.Equal(t, "HelloWorld", manager.Process(store.Message{"RIGHT_POP", value}))
 	assert.Equal(t, http.StatusOK, recorder.Code)
@@ -100,11 +101,11 @@ func Test_RightPeekByListHttpHandler(t *testing.T) {
 	handler := NewListHttpHandler(manager)
 
 	value := make(map[string]string)
-	value["key"] = "hello"
-	value["value"] = "HelloWorld"
-	manager.Process(store.Message{"RIGHT_PUSH", value})
+	value[constant.KEY] = "hello"
+	value[constant.VALUE] = "HelloWorld"
+	manager.Process(store.Message{constant.RIGHT_PUSH, value})
 
-	request, _ := http.NewRequest("GET", "/list/hello/rightPeek", bytes.NewBufferString("HelloWorld"))
+	request, _ := http.NewRequest(http.MethodGet, "/list/hello/rightPeek", bytes.NewBufferString("HelloWorld"))
 	recorder := httptest.NewRecorder()
 
 	server := mux.NewRouter()
@@ -122,11 +123,11 @@ func Test_RightPopByListHttpHandler(t *testing.T) {
 	handler := NewListHttpHandler(manager)
 
 	value := make(map[string]string)
-	value["key"] = "hello"
-	value["value"] = "HelloWorld"
-	manager.Process(store.Message{"RIGHT_PUSH", value})
+	value[constant.KEY] = "hello"
+	value[constant.VALUE] = "HelloWorld"
+	manager.Process(store.Message{constant.RIGHT_PUSH, value})
 
-	request, _ := http.NewRequest("GET", "/list/hello/rightPop", bytes.NewBufferString("HelloWorld"))
+	request, _ := http.NewRequest(http.MethodGet, "/list/hello/rightPop", bytes.NewBufferString("HelloWorld"))
 	recorder := httptest.NewRecorder()
 
 	server := mux.NewRouter()
@@ -145,19 +146,19 @@ func Test_RangeByListHttpHandler(t *testing.T) {
 
 
 	value := make(map[string]string)
-	value["key"] = "hello"
-	value["value"] = "HelloWorld_0"
-	manager.Process(store.Message{"RIGHT_PUSH", value})
-	value["value"] = "HelloWorld_1"
-	manager.Process(store.Message{"RIGHT_PUSH", value})
-	value["value"] = "HelloWorld_2"
-	manager.Process(store.Message{"RIGHT_PUSH", value})
-	value["value"] = "HelloWorld_3"
-	manager.Process(store.Message{"RIGHT_PUSH", value})
-	value["value"] = "HelloWorld_4"
-	manager.Process(store.Message{"RIGHT_PUSH", value})
+	value[constant.KEY] = "hello"
+	value[constant.VALUE] = "HelloWorld_0"
+	manager.Process(store.Message{constant.RIGHT_PUSH, value})
+	value[constant.VALUE] = "HelloWorld_1"
+	manager.Process(store.Message{constant.RIGHT_PUSH, value})
+	value[constant.VALUE] = "HelloWorld_2"
+	manager.Process(store.Message{constant.RIGHT_PUSH, value})
+	value[constant.VALUE] = "HelloWorld_3"
+	manager.Process(store.Message{constant.RIGHT_PUSH, value})
+	value[constant.VALUE] = "HelloWorld_4"
+	manager.Process(store.Message{constant.RIGHT_PUSH, value})
 
-	request, _ := http.NewRequest("GET", "/list/hello/1/3", bytes.NewBufferString("HelloWorld"))
+	request, _ := http.NewRequest(http.MethodGet, "/list/hello/1/3", bytes.NewBufferString("HelloWorld"))
 	recorder := httptest.NewRecorder()
 
 	server := mux.NewRouter()

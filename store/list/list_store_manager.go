@@ -3,6 +3,7 @@ package list
 import (
 	"github.com/geminikim/minimem/store"
 	"github.com/geminikim/minimem/util"
+	"github.com/geminikim/minimem/constant"
 )
 
 type ListStoreManager struct {
@@ -17,17 +18,17 @@ func NewListStoreManager() store.Manager {
 
 func (manager ListStoreManager) Process(message store.Message) string {
 	switch message.Command {
-	case "LEFT_PUSH": return manager.store.leftPush(message.Value["key"], message.Value["value"])
-	case "LEFT_PEEK": return manager.store.leftPeek(message.Value["key"])
-	case "LEFT_POP": return manager.store.leftPop(message.Value["key"])
-	case "RIGHT_PUSH": return manager.store.rightPush(message.Value["key"], message.Value["value"])
-	case "RIGHT_PEEK": return manager.store.rightPeek(message.Value["key"])
-	case "RIGHT_POP": return manager.store.rightPop(message.Value["key"])
-	case "BY_RANGE": return manager.store.byRange(message.Value["key"], util.GetInt(message.Value["index"]), util.GetInt(message.Value["count"]))
-	default: return "Not Supported Command"
+	case constant.LEFT_PUSH: return manager.store.leftPush(message.Value[constant.KEY], message.Value[constant.VALUE])
+	case constant.LEFT_PEEK: return manager.store.leftPeek(message.Value[constant.KEY])
+	case constant.LEFT_POP: return manager.store.leftPop(message.Value[constant.KEY])
+	case constant.RIGHT_PUSH: return manager.store.rightPush(message.Value[constant.KEY], message.Value[constant.VALUE])
+	case constant.RIGHT_PEEK: return manager.store.rightPeek(message.Value[constant.KEY])
+	case constant.RIGHT_POP: return manager.store.rightPop(message.Value[constant.KEY])
+	case constant.BY_RANGE: return manager.store.byRange(message.Value[constant.KEY], util.GetInt(message.Value[constant.INDEX]), util.GetInt(message.Value[constant.COUNT]))
+	default: return constant.NOT_SUPPORTED_COMMAND
 	}
 }
 
 func (manager ListStoreManager) GetType() string {
-	return "LIST"
+	return constant.LIST
 }

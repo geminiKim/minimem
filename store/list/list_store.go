@@ -1,6 +1,9 @@
 package list
 
-import "encoding/json"
+import (
+	"encoding/json"
+	"github.com/geminikim/minimem/constant"
+)
 
 type listStore struct {
 	listMap map[string][]string
@@ -18,12 +21,12 @@ func (store *listStore) leftPush(key string, value string) string {
 	copy(list[1:], list[0:])
 	list[0] = value
 	store.listMap[key] = list
-	return "OK"
+	return constant.OK
 }
 
 func (store *listStore) leftPop(key string) string {
 	if len(store.listMap[key]) == 0 {
-		return ""
+		return constant.EMPTY
 	}
 	list := store.listMap[key]
 	value := list[0]
@@ -33,19 +36,19 @@ func (store *listStore) leftPop(key string) string {
 
 func (store *listStore) leftPeek(key string) string {
 	if len(store.listMap) == 0 {
-		return ""
+		return constant.EMPTY
 	}
 	return store.listMap[key][0]
 }
 
 func (store *listStore) rightPush(key string, value string) string {
 	store.listMap[key] = append(store.listMap[key], value)
-	return "OK"
+	return constant.OK
 }
 
 func (store *listStore) rightPop(key string) string {
 	if len(store.listMap[key]) == 0 {
-		return ""
+		return constant.EMPTY
 	}
 	list := store.listMap[key]
 	value := list[len(list) - 1]
@@ -55,7 +58,7 @@ func (store *listStore) rightPop(key string) string {
 
 func (store *listStore) rightPeek(key string) string {
 	if len(store.listMap) == 0 {
-		return ""
+		return constant.EMPTY
 	}
 	return store.listMap[key][len(store.listMap[key])-1]
 }
