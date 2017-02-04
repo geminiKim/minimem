@@ -5,14 +5,14 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/geminikim/minimem/store/list"
 	"github.com/geminikim/minimem/store/hash"
-	"github.com/geminikim/minimem/store/string"
 	"net/http"
 	"github.com/geminikim/minimem/store"
+	"github.com/geminikim/minimem/store/factory"
 )
 
 func main() {
-	managers := strings.GetStoreManagers()
-	handlers := strings.GetHttpHandler(managers)
+	managers := factory.GetStoreManagers()
+	handlers := factory.GetHttpHandler(managers)
 
 	listStore := list.NewListStore()
 	listHandler := list.NewListHttpHandler(listStore)

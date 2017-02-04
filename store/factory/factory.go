@@ -1,10 +1,13 @@
-package strings
+package factory
 
-import "github.com/geminikim/minimem/store"
+import (
+	"github.com/geminikim/minimem/store"
+	"github.com/geminikim/minimem/store/string"
+)
 
 func GetStoreManagers() []store.Manager {
 	return []store.Manager{
-		NewStringStoreManager(),
+		strings.NewStringStoreManager(),
 	}
 }
 
@@ -12,7 +15,7 @@ func GetHttpHandler(managers []store.Manager) []store.HttpHandler {
 	handlers := make([]store.HttpHandler, len(managers))
 	for index, manager := range managers {
 		switch manager.GetType() {
-		case "STRING": handlers[index] = NewStringHttpHandler(manager)
+		case "STRING": handlers[index] = strings.NewStringHttpHandler(manager)
 		}
 	}
 	return handlers

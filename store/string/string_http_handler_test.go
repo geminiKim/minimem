@@ -40,7 +40,6 @@ func Test_GetByStringHttpHandler(t *testing.T) {
 	stringManager.Process(store.Message{"SET", value})
 
 	request, _ := http.NewRequest("GET", "/string/hello", nil)
-
 	recorder := httptest.NewRecorder()
 
 	server := mux.NewRouter()
