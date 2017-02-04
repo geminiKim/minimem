@@ -1,5 +1,7 @@
 package strings
 
+import "github.com/geminikim/minimem/constant"
+
 type stringStore struct {
 	stringMap map[string]string
 }
@@ -12,7 +14,7 @@ func newStringStore() *stringStore {
 
 func (store stringStore) set(key string, value string) string {
 	store.stringMap[key] = value
-	return "OK"
+	return constant.OK
 }
 
 func (store stringStore) get(key string) string {

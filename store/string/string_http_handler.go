@@ -5,6 +5,7 @@ import (
 	"github.com/gorilla/mux"
 	"io/ioutil"
 	"github.com/geminikim/minimem/store"
+	"github.com/geminikim/minimem/constant"
 )
 
 type StringHttpHandler struct {
@@ -22,10 +23,10 @@ func (handler StringHttpHandler) Set(response http.ResponseWriter, request *http
 	body, _ := ioutil.ReadAll(request.Body)
 
 	value := make(map[string]string)
-	value["key"] = vars["key"]
-	value["value"] = string(body)
+	value[constant.KEY] = vars[constant.KEY]
+	value[constant.VALUE] = string(body)
 
-	result := handler.manager.Process(store.Message{"SET", value})
+	result := handler.manager.Process(store.Message{constant.SET, value})
 	response.Write([]byte(result))
 }
 
@@ -33,15 +34,15 @@ func (handler StringHttpHandler) Get(response http.ResponseWriter, request *http
 	vars := mux.Vars(request)
 
 	value := make(map[string]string)
-	value["key"] = vars["key"]
+	value[constant.KEY] = vars[constant.KEY]
 
-	result := handler.manager.Process(store.Message{"GET", value})
+	result := handler.manager.Process(store.Message{constant.GET, value})
 	response.Write([]byte(result))
 }
 
 func (handler StringHttpHandler) GetHandles() []store.HttpHandle {
 	return []store.HttpHandle {
-		{"POST", "/string/{key}", handler.Set},
-		{"GET", "/string/{key}", handler.Get},
+		{http.MethodPost, "/string/{key}", handler.Set},
+		{http.MethodGet, "/string/{key}", handler.Get},
 	}
 }

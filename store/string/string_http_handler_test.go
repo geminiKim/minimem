@@ -8,13 +8,14 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/gorilla/mux"
 	"github.com/geminikim/minimem/store"
+	"github.com/geminikim/minimem/constant"
 )
 
 func Test_SetByStringHttpHandler(t *testing.T) {
 	manager := NewStringStoreManager()
 	handler := NewStringHttpHandler(manager)
 
-	request, _ := http.NewRequest("POST", "/string/hello", bytes.NewBufferString("HelloWorld"))
+	request, _ := http.NewRequest(http.MethodPost, constant.URL_STRING_SET, bytes.NewBufferString("HelloWorld"))
 	recorder := httptest.NewRecorder()
 
 	server := mux.NewRouter()
@@ -24,9 +25,9 @@ func Test_SetByStringHttpHandler(t *testing.T) {
 	server.ServeHTTP(recorder, request)
 
 	value := make(map[string]string)
-	value["key"] = "hello"
+	value[constant.KEY] = "hello"
 
-	assert.Equal(t, "HelloWorld", manager.Process(store.Message{"GET", value}))
+	assert.Equal(t, "HelloWorld", manager.Process(store.Message{constant.GET, value}))
 	assert.Equal(t, http.StatusOK, recorder.Code)
 }
 
@@ -35,11 +36,11 @@ func Test_GetByStringHttpHandler(t *testing.T) {
 	handler := NewStringHttpHandler(manager)
 
 	value := make(map[string]string)
-	value["key"] = "hello"
-	value["value"] = "HelloWorld"
-	manager.Process(store.Message{"SET", value})
+	value[constant.KEY] = "hello"
+	value[constant.VALUE] = "HelloWorld"
+	manager.Process(store.Message{constant.SET, value})
 
-	request, _ := http.NewRequest("GET", "/string/hello", nil)
+	request, _ := http.NewRequest(http.MethodGet, constant.URL_STRING_GET, nil)
 	recorder := httptest.NewRecorder()
 
 	server := mux.NewRouter()

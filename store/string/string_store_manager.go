@@ -2,6 +2,7 @@ package strings
 
 import (
 	"github.com/geminikim/minimem/store"
+	"github.com/geminikim/minimem/constant"
 )
 
 type StringStoreManager struct {
@@ -16,12 +17,12 @@ func NewStringStoreManager() store.Manager {
 
 func (manager StringStoreManager) Process(message store.Message) string {
 	switch message.Command {
-	case "GET": return manager.store.get(message.Value["key"])
-	case "SET": return manager.store.set(message.Value["key"], message.Value["value"])
-	default: return "Not Supported Command"
+	case constant.GET: return manager.store.get(message.Value[constant.KEY])
+	case constant.SET: return manager.store.set(message.Value[constant.KEY], message.Value[constant.VALUE])
+	default: return constant.NOT_SUPPORTED_COMMAND
 	}
 }
 
 func (manager StringStoreManager) GetType() string {
-	return "STRING"
+	return constant.STRING
 }
