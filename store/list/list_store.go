@@ -1,5 +1,7 @@
 package list
 
+import "encoding/json"
+
 type listStore struct {
 	listMap map[string][]string
 }
@@ -10,12 +12,13 @@ func NewListStore() *listStore {
 	return store
 }
 
-func (store *listStore) leftPush(key string, value string) {
+func (store *listStore) leftPush(key string, value string) string {
 	list := store.listMap[key]
 	list = append(list, value)
 	copy(list[1:], list[0:])
 	list[0] = value
 	store.listMap[key] = list
+	return "OK"
 }
 
 func (store *listStore) leftPop(key string) string {
@@ -35,8 +38,9 @@ func (store *listStore) leftPeek(key string) string {
 	return store.listMap[key][0]
 }
 
-func (store *listStore) rightPush(key string, value string) {
+func (store *listStore) rightPush(key string, value string) string {
 	store.listMap[key] = append(store.listMap[key], value)
+	return "OK"
 }
 
 func (store *listStore) rightPop(key string) string {
@@ -56,6 +60,7 @@ func (store *listStore) rightPeek(key string) string {
 	return store.listMap[key][len(store.listMap[key])-1]
 }
 
-func (store *listStore) rangeGet(key string, index int, count int) []string {
-	return store.listMap[key][index:count + 1]
+func (store *listStore) byRange(key string, index int, count int) string {
+	result, _ := json.Marshal(store.listMap[key][index:count + 1])
+	return string(result)
 }

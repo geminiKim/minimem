@@ -3,56 +3,86 @@ package list
 import (
 	"github.com/gorilla/mux"
 	"net/http"
-	"encoding/json"
-	"strconv"
-	"io/ioutil"
 	"github.com/geminikim/minimem/store"
+	"github.com/geminikim/minimem/util"
 )
 
 type ListHttpHandler struct {
-	store *listStore
+	manager store.Manager
 }
 
-func NewListHttpHandler(store *listStore) *ListHttpHandler {
+func NewListHttpHandler(manager store.Manager) store.HttpHandler {
 	handler := new(ListHttpHandler)
-	handler.store = store
+	handler.manager = manager
 	return handler
 }
 
 func (handler ListHttpHandler) LeftPush(response http.ResponseWriter, request *http.Request) {
 	vars := mux.Vars(request)
-	body, _ := ioutil.ReadAll(request.Body)
-	handler.store.leftPush(vars["key"], string(body))
+
+	value := make(map[string]string)
+	value["key"] = vars["key"]
+	value["value"] = util.ReadAll(request)
+
+	result := handler.manager.Process(store.Message{"LEFT_PUSH", value})
+	response.Write([]byte(result))
 }
 func (handler ListHttpHandler) LeftPop(response http.ResponseWriter, request *http.Request) {
 	vars := mux.Vars(request)
-	response.Write([]byte(handler.store.leftPop(vars["key"])))
+
+	value := make(map[string]string)
+	value["key"] = vars["key"]
+
+	result := handler.manager.Process(store.Message{"LEFT_POP", value})
+	response.Write([]byte(result))
 }
 func (handler ListHttpHandler) LeftPeek(response http.ResponseWriter, request *http.Request) {
 	vars := mux.Vars(request)
-	response.Write([]byte(handler.store.leftPeek(vars["key"])))
+
+	value := make(map[string]string)
+	value["key"] = vars["key"]
+
+	result := handler.manager.Process(store.Message{"LEFT_PEEK", value})
+	response.Write([]byte(result))
 }
 func (handler ListHttpHandler) RightPush(response http.ResponseWriter, request *http.Request) {
 	vars := mux.Vars(request)
-	body, _ := ioutil.ReadAll(request.Body)
-	handler.store.rightPush(vars["key"], string(body))
+
+	value := make(map[string]string)
+	value["key"] = vars["key"]
+	value["value"] = util.ReadAll(request)
+
+	result := handler.manager.Process(store.Message{"RIGHT_PUSH", value})
+	response.Write([]byte(result))
 }
 func (handler ListHttpHandler) RightPop(response http.ResponseWriter, request *http.Request) {
 	vars := mux.Vars(request)
-	response.Write([]byte(handler.store.rightPop(vars["key"])))
+
+	value := make(map[string]string)
+	value["key"] = vars["key"]
+
+	result := handler.manager.Process(store.Message{"RIGHT_POP", value})
+	response.Write([]byte(result))
 }
 func (handler ListHttpHandler) RightPeek(response http.ResponseWriter, request *http.Request) {
 	vars := mux.Vars(request)
-	response.Write([]byte(handler.store.rightPeek(vars["key"])))
+
+	value := make(map[string]string)
+	value["key"] = vars["key"]
+
+	result := handler.manager.Process(store.Message{"RIGHT_PEEK", value})
+	response.Write([]byte(result))
 }
 func (handler ListHttpHandler) RangeGet(response http.ResponseWriter, request *http.Request) {
 	vars := mux.Vars(request)
-	index, _ := strconv.Atoi(vars["index"])
-	count, _ := strconv.Atoi(vars["count"])
 
-	list := handler.store.rangeGet(vars["key"], index, count)
-	result, _ := json.Marshal(list)
-	response.Write(result)
+	value := make(map[string]string)
+	value["key"] = vars["key"]
+	value["index"] = vars["index"]
+	value["count"] = vars["count"]
+
+	result := handler.manager.Process(store.Message{"BY_RANGE", value})
+	response.Write([]byte(result))
 }
 
 func (handler ListHttpHandler) GetHandles() []store.HttpHandle {
@@ -63,6 +93,6 @@ func (handler ListHttpHandler) GetHandles() []store.HttpHandle {
 		{"POST", "/list/{key}/rightPush", handler.RightPush},
 		{"GET", "/list/{key}/rightPeek", handler.RightPeek},
 		{"GET", "/list/{key}/rightPop", handler.RightPop},
-		{"POST", "/list/{key}/{index}/{count}", handler.RangeGet},
+		{"GET", "/list/{key}/{index}/{count}", handler.RangeGet},
 	}
 }

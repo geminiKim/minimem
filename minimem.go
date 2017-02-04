@@ -3,24 +3,22 @@ package main
 import (
 	"log"
 	"github.com/gorilla/mux"
-	"github.com/geminikim/minimem/store/list"
-	"github.com/geminikim/minimem/store/hash"
 	"net/http"
 	"github.com/geminikim/minimem/store"
 	"github.com/geminikim/minimem/store/factory"
 )
 
 func main() {
-	managers := factory.GetStoreManagers()
-	handlers := factory.GetHttpHandler(managers)
+	managers := factory.GetManagers()
+	handlers := factory.GetHttpHandlers(managers)
 
-	listStore := list.NewListStore()
-	listHandler := list.NewListHttpHandler(listStore)
+	//listStore := list.NewListStore()
+	//listHandler := list.NewListHttpHandler(listStore)
 
-	hashStore := hash.NewHashStore()
-	hashHandler := hash.NewHashHttpHandler(hashStore)
+	//hashStore := hash.NewHashStore()
+	//hashHandler := hash.NewHashHttpHandler(hashStore)
 
-	httpServerStart("8011", []store.HttpHandler{handlers[0], listHandler, hashHandler})
+	httpServerStart("8011", handlers)
 }
 func httpServerStart(port string, handlers []store.HttpHandler) {
 	server := mux.NewRouter()

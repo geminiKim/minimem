@@ -5,13 +5,13 @@ import (
 	"github.com/geminikim/minimem/store/string"
 )
 
-func GetStoreManagers() []store.Manager {
+func GetManagers() []store.Manager {
 	return []store.Manager{
 		strings.NewStringStoreManager(),
 	}
 }
 
-func GetHttpHandler(managers []store.Manager) []store.HttpHandler {
+func GetHttpHandlers(managers []store.Manager) []store.HttpHandler {
 	handlers := make([]store.HttpHandler, len(managers))
 	for index, manager := range managers {
 		switch manager.GetType() {

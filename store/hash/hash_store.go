@@ -10,11 +10,12 @@ func NewHashStore() *hashStore {
 	return store
 }
 
-func (store hashStore) set(key string, field string, value string) {
+func (store hashStore) set(key string, field string, value string) string {
 	if store.hashMap[key] == nil {
 		store.hashMap[key] = make(map[string]string);
 	}
 	store.hashMap[key][field] = value;
+	return "OK"
 }
 
 func (store hashStore) get(key string, field string) string {
