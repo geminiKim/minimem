@@ -24,7 +24,7 @@ func (manager ListStoreManager) Process(message store.Message) string {
 	case constant.RIGHT_PUSH: return manager.store.rightPush(message.Value[constant.KEY], message.Value[constant.VALUE])
 	case constant.RIGHT_PEEK: return manager.store.rightPeek(message.Value[constant.KEY])
 	case constant.RIGHT_POP: return manager.store.rightPop(message.Value[constant.KEY])
-	case constant.BY_RANGE: return manager.store.byRange(message.Value[constant.KEY], util.GetInt(message.Value[constant.INDEX]), util.GetInt(message.Value[constant.COUNT]))
+	case constant.BY_RANGE: return util.ToJsonString(manager.store.byRange(message.Value[constant.KEY], util.GetInt(message.Value[constant.INDEX]), util.GetInt(message.Value[constant.COUNT])))
 	default: return constant.NOT_SUPPORTED_COMMAND
 	}
 }

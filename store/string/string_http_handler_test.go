@@ -15,7 +15,7 @@ func Test_SetByStringHttpHandler(t *testing.T) {
 	manager := NewStringStoreManager()
 	handler := NewStringHttpHandler(manager)
 
-	request, _ := http.NewRequest(http.MethodPost, constant.URL_STRING_SET, bytes.NewBufferString("HelloWorld"))
+	request, _ := http.NewRequest(http.MethodPost, "/string/hello", bytes.NewBufferString("HelloWorld"))
 	recorder := httptest.NewRecorder()
 
 	server := mux.NewRouter()
@@ -40,7 +40,7 @@ func Test_GetByStringHttpHandler(t *testing.T) {
 	value[constant.VALUE] = "HelloWorld"
 	manager.Process(store.Message{constant.SET, value})
 
-	request, _ := http.NewRequest(http.MethodGet, constant.URL_STRING_GET, nil)
+	request, _ := http.NewRequest(http.MethodGet, "/string/hello", nil)
 	recorder := httptest.NewRecorder()
 
 	server := mux.NewRouter()

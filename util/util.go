@@ -4,6 +4,7 @@ import (
 	"strconv"
 	"io/ioutil"
 	"net/http"
+	"encoding/json"
 )
 
 func GetInt(value string) int {
@@ -14,6 +15,12 @@ func GetInt(value string) int {
 func ReadAll(request *http.Request) string {
 	result, _ := ioutil.ReadAll(request.Body)
 	return string(result)
+}
+
+
+func ToJsonString(value []string) string {
+	json, _ := json.Marshal(value)
+	return string(json)
 }
 
 

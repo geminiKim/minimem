@@ -12,12 +12,6 @@ func main() {
 	managers := factory.GetManagers()
 	handlers := factory.GetHttpHandlers(managers)
 
-	//listStore := list.NewListStore()
-	//listHandler := list.NewListHttpHandler(listStore)
-
-	//hashStore := hash.NewHashStore()
-	//hashHandler := hash.NewHashHttpHandler(hashStore)
-
 	httpServerStart("8011", handlers)
 }
 func httpServerStart(port string, handlers []store.HttpHandler) {

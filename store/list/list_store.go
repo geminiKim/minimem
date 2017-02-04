@@ -1,7 +1,6 @@
 package list
 
 import (
-	"encoding/json"
 	"github.com/geminikim/minimem/constant"
 )
 
@@ -63,7 +62,6 @@ func (store *listStore) rightPeek(key string) string {
 	return store.listMap[key][len(store.listMap[key])-1]
 }
 
-func (store *listStore) byRange(key string, index int, count int) string {
-	result, _ := json.Marshal(store.listMap[key][index:count + 1])
-	return string(result)
+func (store *listStore) byRange(key string, index int, count int) []string {
+	return store.listMap[key][index:count + 1]
 }
