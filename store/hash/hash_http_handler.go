@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"io/ioutil"
 	"github.com/geminikim/minimem/store"
+	"github.com/geminikim/minimem/constant"
 )
 
 type HashHttpHandler struct {
@@ -22,11 +23,11 @@ func (handler HashHttpHandler) Set(response http.ResponseWriter, request *http.R
 	body, _ := ioutil.ReadAll(request.Body)
 
 	value := make(map[string]string)
-	value["key"] = vars["key"]
-	value["field"] = vars["field"]
-	value["value"] = string(body)
+	value[constant.KEY] = vars[constant.KEY]
+	value[constant.FIELD] = vars[constant.FIELD]
+	value[constant.VALUE] = string(body)
 
-	result := handler.manager.Process(store.Message{"SET", value})
+	result := handler.manager.Process(store.Message{constant.SET, value})
 	response.Write([]byte(result))
 }
 
@@ -34,16 +35,16 @@ func (handler HashHttpHandler) Get(response http.ResponseWriter, request *http.R
 	vars := mux.Vars(request)
 
 	value := make(map[string]string)
-	value["key"] = vars["key"]
-	value["field"] = vars["field"]
+	value[constant.KEY] = vars[constant.KEY]
+	value[constant.FIELD] = vars[constant.FIELD]
 
-	result := handler.manager.Process(store.Message{"GET", value})
+	result := handler.manager.Process(store.Message{constant.GET, value})
 	response.Write([]byte(result))
 }
 
 func (handler HashHttpHandler) GetHandles() []store.HttpHandle {
 	return []store.HttpHandle {
-		{"POST", "/hash/{key}/{field}", handler.Set},
-		{"GET", "/hash/{key}/{field}", handler.Get},
+		{http.MethodPost, constant.URL_HASH_SET, handler.Set},
+		{http.MethodGet, constant.URL_HASH_GET, handler.Get},
 	}
 }

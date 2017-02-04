@@ -8,6 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/gorilla/mux"
 	"github.com/geminikim/minimem/store"
+	"github.com/geminikim/minimem/constant"
 )
 
 func Test_SetByHashHttpHandler(t *testing.T) {
@@ -18,14 +19,14 @@ func Test_SetByHashHttpHandler(t *testing.T) {
 	recorder := httptest.NewRecorder()
 
 	server := mux.NewRouter()
-	server.HandleFunc("/hash/{key}/{field}", storeHandler.Set).Methods("POST")
+	server.HandleFunc(constant.URL_HASH_SET, storeHandler.Set).Methods(http.MethodPost)
 	server.ServeHTTP(recorder, request)
 
 	value := make(map[string]string)
-	value["key"] = "hello"
-	value["field"] = "world"
+	value[constant.KEY] = "hello"
+	value[constant.FIELD] = "world"
 
-	assert.Equal(t, "HelloWorld", manager.Process(store.Message{"GET", value}))
+	assert.Equal(t, "HelloWorld", manager.Process(store.Message{constant.GET, value}))
 	assert.Equal(t, http.StatusOK, recorder.Code)
 }
 
@@ -34,16 +35,16 @@ func Test_GetByHashHttpHandler(t *testing.T) {
 	storeHandler := NewHashHttpHandler(manager)
 
 	value := make(map[string]string)
-	value["key"] = "hello"
-	value["field"] = "world"
-	value["value"] = "HelloWorld"
+	value[constant.KEY] = "hello"
+	value[constant.FIELD] = "world"
+	value[constant.VALUE] = "HelloWorld"
 	manager.Process(store.Message{"SET", value})
 
-	request, _ := http.NewRequest("GET", "/hash/hello/world", nil)
+	request, _ := http.NewRequest(constant.GET, "/hash/hello/world", nil)
 	recorder := httptest.NewRecorder()
 
 	server := mux.NewRouter()
-	server.HandleFunc("/hash/{key}/{field}", storeHandler.Get).Methods("GET")
+	server.HandleFunc(constant.URL_HASH_GET, storeHandler.Get).Methods(http.MethodGet)
 	server.ServeHTTP(recorder, request)
 
 	assert.Equal(t, "HelloWorld", recorder.Body.String())

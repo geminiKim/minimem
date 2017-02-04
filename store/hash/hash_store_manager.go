@@ -2,6 +2,7 @@ package hash
 
 import (
 	"github.com/geminikim/minimem/store"
+	"github.com/geminikim/minimem/constant"
 )
 
 type HashStoreManager struct {
@@ -16,12 +17,12 @@ func NewHashStoreManager() store.Manager {
 
 func (manager HashStoreManager) Process(message store.Message) string {
 	switch message.Command {
-	case "GET": return manager.store.get(message.Value["key"], message.Value["field"])
-	case "SET": return manager.store.set(message.Value["key"], message.Value["field"], message.Value["value"])
-	default: return "Not Supported Command"
+	case constant.GET: return manager.store.get(message.Value[constant.KEY], message.Value[constant.FIELD])
+	case constant.SET: return manager.store.set(message.Value[constant.KEY], message.Value[constant.FIELD], message.Value[constant.VALUE])
+	default: return constant.NOT_SUPPORTED_COMMAND
 	}
 }
 
 func (manager HashStoreManager) GetType() string {
-	return "HASH"
+	return constant.HASH
 }
