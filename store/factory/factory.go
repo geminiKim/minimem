@@ -3,11 +3,15 @@ package factory
 import (
 	"github.com/geminikim/minimem/store"
 	"github.com/geminikim/minimem/store/string"
+	"github.com/geminikim/minimem/store/list"
+	"github.com/geminikim/minimem/store/hash"
 )
 
 func GetManagers() []store.Manager {
 	return []store.Manager{
 		strings.NewStringStoreManager(),
+		list.NewListStoreManager(),
+		hash.NewHashStoreManager(),
 	}
 }
 

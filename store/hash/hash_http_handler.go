@@ -8,24 +8,37 @@ import (
 )
 
 type HashHttpHandler struct {
-	store *hashStore
+	manager store.Manager
 }
 
-func NewHashHttpHandler(store *hashStore) *HashHttpHandler {
+func NewHashHttpHandler(manager store.Manager) *HashHttpHandler {
 	handler := new(HashHttpHandler)
-	handler.store = store
+	handler.manager = manager
 	return handler
 }
 
 func (handler HashHttpHandler) Set(response http.ResponseWriter, request *http.Request) {
 	vars := mux.Vars(request)
 	body, _ := ioutil.ReadAll(request.Body)
-	handler.store.set(vars["key"], vars["field"], string(body))
+
+	value := make(map[string]string)
+	value["key"] = vars["key"]
+	value["field"] = vars["field"]
+	value["value"] = string(body)
+
+	result := handler.manager.Process(store.Message{"SET", value})
+	response.Write([]byte(result))
 }
 
 func (handler HashHttpHandler) Get(response http.ResponseWriter, request *http.Request) {
 	vars := mux.Vars(request)
-	response.Write([]byte(handler.store.get(vars["key"], vars["field"])))
+
+	value := make(map[string]string)
+	value["key"] = vars["key"]
+	value["field"] = vars["field"]
+
+	result := handler.manager.Process(store.Message{"GET", value})
+	response.Write([]byte(result))
 }
 
 func (handler HashHttpHandler) GetHandles() []store.HttpHandle {
