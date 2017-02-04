@@ -12,11 +12,13 @@ import (
 
 func main() {
 	stringStore := strings.NewStringStore()
-	listStore := list.NewListStore()
-	hashStore := hash.NewHashStore()
+	stringManager := strings.NewStringStoreManager(stringStore)
+	stringHandler := strings.NewStringHttpHandler(stringManager)
 
-	stringHandler := strings.NewStringHttpHandler(stringStore)
+	listStore := list.NewListStore()
 	listHandler := list.NewListHttpHandler(listStore)
+
+	hashStore := hash.NewHashStore()
 	hashHandler := hash.NewHashHttpHandler(hashStore)
 
 	httpServerStart("8011", []store.HttpHandler{stringHandler, listHandler, hashHandler})

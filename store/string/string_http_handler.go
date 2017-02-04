@@ -8,24 +8,35 @@ import (
 )
 
 type StringHttpHandler struct {
-	store *stringStore
+	manager store.Manager
 }
 
-func NewStringHttpHandler(store *stringStore) *StringHttpHandler {
+func NewStringHttpHandler(manager store.Manager) *StringHttpHandler {
 	handler := new(StringHttpHandler)
-	handler.store = store
+	handler.manager = manager
 	return handler
 }
 
 func (handler StringHttpHandler) Set(response http.ResponseWriter, request *http.Request) {
 	vars := mux.Vars(request)
 	body, _ := ioutil.ReadAll(request.Body)
-	handler.store.set(vars["key"], string(body))
+
+	value := make(map[string]string)
+	value["key"] = vars["key"]
+	value["value"] = string(body)
+
+	result := handler.manager.Process(store.Message{"SET", value})
+	response.Write([]byte(result))
 }
 
 func (handler StringHttpHandler) Get(response http.ResponseWriter, request *http.Request) {
 	vars := mux.Vars(request)
-	response.Write([]byte(handler.store.get(vars["key"])))
+
+	value := make(map[string]string)
+	value["key"] = vars["key"]
+
+	result := handler.manager.Process(store.Message{"GET", value})
+	response.Write([]byte(result))
 }
 
 func (handler StringHttpHandler) GetHandles() []store.HttpHandle {

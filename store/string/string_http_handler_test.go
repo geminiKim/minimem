@@ -11,7 +11,8 @@ import (
 
 func Test_SetByStringHttpHandler(t *testing.T) {
 	store := NewStringStore()
-	storeHandler := NewStringHttpHandler(store)
+	stringManager := NewStringStoreManager(store)
+	storeHandler := NewStringHttpHandler(stringManager)
 
 	request, _ := http.NewRequest("POST", "/string/hello", bytes.NewBufferString("HelloWorld"))
 	recorder := httptest.NewRecorder()
@@ -26,7 +27,8 @@ func Test_SetByStringHttpHandler(t *testing.T) {
 
 func Test_GetByStringHttpHandler(t *testing.T) {
 	store := NewStringStore()
-	storeHandler := NewStringHttpHandler(store)
+	stringManager := NewStringStoreManager(store)
+	storeHandler := NewStringHttpHandler(stringManager)
 
 	store.set("hello", "HelloWorld")
 

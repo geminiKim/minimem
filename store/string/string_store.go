@@ -4,8 +4,9 @@ type stringStore struct {
 	stringMap map[string]string
 }
 
-func (store stringStore) set(key string, value string) {
+func (store stringStore) set(key string, value string) string {
 	store.stringMap[key] = value
+	return "OK"
 }
 
 func (store stringStore) get(key string) string {
