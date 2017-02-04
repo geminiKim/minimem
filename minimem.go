@@ -11,8 +11,7 @@ import (
 )
 
 func main() {
-	stringStore := strings.NewStringStore()
-	stringManager := strings.NewStringStoreManager(stringStore)
+	stringManager := strings.NewStringStoreManager()
 	stringHandler := strings.NewStringHttpHandler(stringManager)
 
 	listStore := list.NewListStore()

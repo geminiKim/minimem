@@ -1,6 +1,8 @@
 package strings
 
-import "github.com/geminikim/minimem/store"
+import (
+	"github.com/geminikim/minimem/store"
+)
 
 type StringStoreManager struct {
 	store *stringStore
@@ -14,8 +16,8 @@ func (manager StringStoreManager) Process(message store.Message) string {
 	}
 }
 
-func NewStringStoreManager(store *stringStore) *StringStoreManager {
+func NewStringStoreManager() store.Manager {
 	manager := new(StringStoreManager)
-	manager.store = store
+	manager.store = newStringStore()
 	return manager
 }

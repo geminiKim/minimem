@@ -13,7 +13,7 @@ func (store stringStore) get(key string) string {
 	return store.stringMap[key]
 }
 
-func NewStringStore() *stringStore {
+func newStringStore() *stringStore {
 	store := new(stringStore)
 	store.stringMap = make(map[string]string)
 	return store
