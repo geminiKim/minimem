@@ -11,7 +11,7 @@ type StringHttpHandler struct {
 	manager store.Manager
 }
 
-func NewStringHttpHandler(manager store.Manager) *StringHttpHandler {
+func NewStringHttpHandler(manager store.Manager) store.HttpHandler {
 	handler := new(StringHttpHandler)
 	handler.manager = manager
 	return handler

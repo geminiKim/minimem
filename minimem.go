@@ -11,8 +11,8 @@ import (
 )
 
 func main() {
-	stringManager := strings.NewStringStoreManager()
-	stringHandler := strings.NewStringHttpHandler(stringManager)
+	managers := strings.GetStoreManagers()
+	stringHandler := strings.GetHttpHandler(managers)[0]
 
 	listStore := list.NewListStore()
 	listHandler := list.NewListHttpHandler(listStore)

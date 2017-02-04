@@ -8,6 +8,12 @@ type StringStoreManager struct {
 	store *stringStore
 }
 
+func NewStringStoreManager() store.Manager {
+	manager := new(StringStoreManager)
+	manager.store = newStringStore()
+	return manager
+}
+
 func (manager StringStoreManager) Process(message store.Message) string {
 	switch message.Command {
 	case "GET": return manager.store.get(message.Value["key"])
@@ -16,8 +22,6 @@ func (manager StringStoreManager) Process(message store.Message) string {
 	}
 }
 
-func NewStringStoreManager() store.Manager {
-	manager := new(StringStoreManager)
-	manager.store = newStringStore()
-	return manager
+func (manager StringStoreManager) GetType() string {
+	return "STRING"
 }
