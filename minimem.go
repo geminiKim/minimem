@@ -12,7 +12,7 @@ import (
 
 func main() {
 	managers := strings.GetStoreManagers()
-	stringHandler := strings.GetHttpHandler(managers)[0]
+	handlers := strings.GetHttpHandler(managers)
 
 	listStore := list.NewListStore()
 	listHandler := list.NewListHttpHandler(listStore)
@@ -20,7 +20,7 @@ func main() {
 	hashStore := hash.NewHashStore()
 	hashHandler := hash.NewHashHttpHandler(hashStore)
 
-	httpServerStart("8011", []store.HttpHandler{stringHandler, listHandler, hashHandler})
+	httpServerStart("8011", []store.HttpHandler{handlers[0], listHandler, hashHandler})
 }
 func httpServerStart(port string, handlers []store.HttpHandler) {
 	server := mux.NewRouter()

@@ -3,9 +3,8 @@ package strings
 import "github.com/geminikim/minimem/store"
 
 func GetStoreManagers() []store.Manager {
-	manager := NewStringStoreManager()
 	return []store.Manager{
-		manager,
+		NewStringStoreManager(),
 	}
 }
 
