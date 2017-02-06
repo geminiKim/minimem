@@ -15,7 +15,7 @@ func Test_SetByHashHttpHandler(t *testing.T) {
 	manager := NewHashStoreManager()
 	storeHandler := NewHashHttpHandler(manager)
 
-	request, _ := http.NewRequest("POST", "/hash/hello/world", bytes.NewBufferString("HelloWorld"))
+	request, _ := http.NewRequest(http.MethodPost, "/hash/hello/world", bytes.NewBufferString("HelloWorld"))
 	recorder := httptest.NewRecorder()
 
 	server := mux.NewRouter()
@@ -40,7 +40,7 @@ func Test_GetByHashHttpHandler(t *testing.T) {
 	value[constant.VALUE] = "HelloWorld"
 	manager.Process(store.Message{"SET", value})
 
-	request, _ := http.NewRequest(constant.GET, "/hash/hello/world", nil)
+	request, _ := http.NewRequest(http.MethodGet, "/hash/hello/world", nil)
 	recorder := httptest.NewRecorder()
 
 	server := mux.NewRouter()
