@@ -2,7 +2,6 @@ package strings
 
 import (
 	"net/http"
-	"github.com/gorilla/mux"
 	"github.com/geminikim/minimem/store"
 	"github.com/geminikim/minimem/constant"
 	"github.com/geminikim/minimem/util"
@@ -19,22 +18,13 @@ func NewStringHttpHandler(manager store.Manager) store.HttpHandler {
 }
 
 func (handler StringHttpHandler) Set(response http.ResponseWriter, request *http.Request) {
-	vars := mux.Vars(request)
-
-	value := make(map[string]string)
-	value[constant.KEY] = vars[constant.KEY]
-	value[constant.VALUE] = util.ReadAll(request)
-
+	value := util.GetMessageMapWithBody(request, []string{constant.KEY}, constant.VALUE)
 	result := handler.manager.Process(store.Message{constant.SET, value})
 	response.Write([]byte(result))
 }
 
 func (handler StringHttpHandler) Get(response http.ResponseWriter, request *http.Request) {
-	vars := mux.Vars(request)
-
-	value := make(map[string]string)
-	value[constant.KEY] = vars[constant.KEY]
-
+	value := util.GetMessageMap(request, []string{constant.KEY})
 	result := handler.manager.Process(store.Message{constant.GET, value})
 	response.Write([]byte(result))
 }

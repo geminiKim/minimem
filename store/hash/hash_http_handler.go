@@ -1,7 +1,6 @@
 package hash
 
 import (
-	"github.com/gorilla/mux"
 	"net/http"
 	"github.com/geminikim/minimem/store"
 	"github.com/geminikim/minimem/constant"
@@ -19,24 +18,13 @@ func NewHashHttpHandler(manager store.Manager) *HashHttpHandler {
 }
 
 func (handler HashHttpHandler) Set(response http.ResponseWriter, request *http.Request) {
-	vars := mux.Vars(request)
-
-	value := make(map[string]string)
-	value[constant.KEY] = vars[constant.KEY]
-	value[constant.FIELD] = vars[constant.FIELD]
-	value[constant.VALUE] = util.ReadAll(request)
-
+	value := util.GetMessageMapWithBody(request, []string{constant.KEY,constant.FIELD}, constant.VALUE)
 	result := handler.manager.Process(store.Message{constant.SET, value})
 	response.Write([]byte(result))
 }
 
 func (handler HashHttpHandler) Get(response http.ResponseWriter, request *http.Request) {
-	vars := mux.Vars(request)
-
-	value := make(map[string]string)
-	value[constant.KEY] = vars[constant.KEY]
-	value[constant.FIELD] = vars[constant.FIELD]
-
+	value := util.GetMessageMap(request, []string{constant.KEY,constant.FIELD})
 	result := handler.manager.Process(store.Message{constant.GET, value})
 	response.Write([]byte(result))
 }
