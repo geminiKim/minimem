@@ -63,5 +63,5 @@ func (store *listStore) rightPeek(key string) string {
 }
 
 func (store *listStore) byRange(key string, index int, count int) []string {
-	return store.listMap[key][index:count + 1]
+	return store.listMap[key][index:count]
 }

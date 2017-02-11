@@ -35,6 +35,6 @@ func Test_listRangeGetToString(t *testing.T) {
 	store.leftPush("key", "value2")
 	store.leftPush("key", "value1")
 	store.leftPush("key", "value0")
-	assert.Equal(t, "[\"value0\",\"value1\",\"value2\"]", util.ToJsonString(store.byRange("key", 0, 2)))
+	assert.Equal(t, "[\"value0\",\"value1\"]", util.ToJsonString(store.byRange("key", 0, 2)))
 
 }

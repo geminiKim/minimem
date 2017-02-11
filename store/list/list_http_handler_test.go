@@ -28,7 +28,7 @@ func Test_LeftPushByListHttpHandler(t *testing.T) {
 	value := make(map[string]string)
 	value[constant.KEY] = "hello"
 
-	assert.Equal(t, "HelloWorld", manager.Process(store.Message{"LEFT_POP", value}))
+	assert.Equal(t, "HelloWorld", manager.Process(store.Message{constant.LEFT_POP, value}))
 	assert.Equal(t, http.StatusOK, recorder.Code)
 }
 
@@ -92,7 +92,7 @@ func Test_RightPushByListHttpHandler(t *testing.T) {
 	value := make(map[string]string)
 	value[constant.KEY] = "hello"
 
-	assert.Equal(t, "HelloWorld", manager.Process(store.Message{"RIGHT_POP", value}))
+	assert.Equal(t, "HelloWorld", manager.Process(store.Message{constant.RIGHT_POP, value}))
 	assert.Equal(t, http.StatusOK, recorder.Code)
 }
 
@@ -167,7 +167,7 @@ func Test_RangeByListHttpHandler(t *testing.T) {
 	}
 	server.ServeHTTP(recorder, request)
 
-	assert.Equal(t, "[\"HelloWorld_1\",\"HelloWorld_2\",\"HelloWorld_3\"]", recorder.Body.String())
+	assert.Equal(t, "[\"HelloWorld_1\",\"HelloWorld_2\"]", recorder.Body.String())
 	assert.Equal(t, http.StatusOK, recorder.Code)
 }
 
