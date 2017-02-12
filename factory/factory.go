@@ -2,7 +2,6 @@ package factory
 
 import (
 	"github.com/geminikim/minimem/store"
-	"github.com/geminikim/minimem/store/string"
 	"github.com/geminikim/minimem/store/list"
 	"github.com/geminikim/minimem/store/hash"
 	"github.com/geminikim/minimem/constant"

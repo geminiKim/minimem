@@ -7,7 +7,6 @@ import (
 	"bytes"
 	"github.com/stretchr/testify/assert"
 	"github.com/gorilla/mux"
-	"github.com/geminikim/minimem/store"
 	"github.com/geminikim/minimem/constant"
 )
 

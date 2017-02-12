@@ -1,18 +1,16 @@
-package hash
+package strings
 
 import (
-	"github.com/geminikim/minimem/store"
 	"github.com/geminikim/minimem/constant"
 	"testing"
 	"github.com/stretchr/testify/assert"
 )
 
-func Test_SetByHashStoreManager(t *testing.T) {
-	manager := NewHashStoreManager();
+func Test_SetByStringStoreManager(t *testing.T) {
+	manager := NewStringStoreManager();
 
 	value := make(map[string]string)
 	value[constant.KEY] = "hello"
-	value[constant.FIELD] = "world"
 	value[constant.VALUE] = "HelloWorld"
 	manager.Process(store.Message{constant.GET, value})
 
@@ -20,12 +18,11 @@ func Test_SetByHashStoreManager(t *testing.T) {
 	assert.Equal(t, constant.OK, response)
 }
 
-func Test_GetByHashStoreManager(t *testing.T) {
-	manager := NewHashStoreManager();
+func Test_GetByStringStoreManager(t *testing.T) {
+	manager := NewStringStoreManager();
 
 	value := make(map[string]string)
 	value[constant.KEY] = "hello"
-	value[constant.FIELD] = "world"
 	value[constant.VALUE] = "HelloWorld"
 	manager.Process(store.Message{constant.SET, value})
 

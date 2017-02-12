@@ -1,7 +1,6 @@
 package list
 
 import (
-	"github.com/geminikim/minimem/store"
 	"github.com/geminikim/minimem/constant"
 	"testing"
 	"github.com/stretchr/testify/assert"

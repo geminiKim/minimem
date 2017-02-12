@@ -1,7 +1,6 @@
 package list
 
 import (
-	"github.com/geminikim/minimem/store"
 	"github.com/geminikim/minimem/util"
 	"github.com/geminikim/minimem/constant"
 )
