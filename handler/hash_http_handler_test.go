@@ -12,8 +12,8 @@ import (
 )
 
 func Test_SetByHashHttpHandler(t *testing.T) {
-	manager := manager.NewHashStoreManager()
-	storeHandler := NewHashHttpHandler(manager)
+	storeManager := manager.NewHashStoreManager()
+	storeHandler := NewHashHttpHandler(storeManager)
 
 	request, _ := http.NewRequest(http.MethodPost, "/hash/hello/world", bytes.NewBufferString("HelloWorld"))
 	recorder := httptest.NewRecorder()
@@ -26,19 +26,19 @@ func Test_SetByHashHttpHandler(t *testing.T) {
 	value[constant.KEY] = "hello"
 	value[constant.FIELD] = "world"
 
-	assert.Equal(t, "HelloWorld", manager.Process(manager.Message{constant.GET, value}))
+	assert.Equal(t, "HelloWorld", storeManager.Process(manager.Message{constant.GET, value}))
 	assert.Equal(t, http.StatusOK, recorder.Code)
 }
 
 func Test_GetByHashHttpHandler(t *testing.T) {
-	manager := manager.NewHashStoreManager()
-	storeHandler := NewHashHttpHandler(manager)
+	storeManager := manager.NewHashStoreManager()
+	storeHandler := NewHashHttpHandler(storeManager)
 
 	value := make(map[string]string)
 	value[constant.KEY] = "hello"
 	value[constant.FIELD] = "world"
 	value[constant.VALUE] = "HelloWorld"
-	manager.Process(manager.Message{"SET", value})
+	storeManager.Process(manager.Message{"SET", value})
 
 	request, _ := http.NewRequest(http.MethodGet, "/hash/hello/world", nil)
 	recorder := httptest.NewRecorder()

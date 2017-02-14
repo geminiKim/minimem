@@ -12,14 +12,14 @@ import (
 )
 
 func Test_SetByStringHttpHandler(t *testing.T) {
-	manager := manager.NewStringStoreManager()
-	handler := NewStringHttpHandler(manager)
+	storeManager := manager.NewStringStoreManager()
+	storeHandler := NewStringHttpHandler(storeManager)
 
 	request, _ := http.NewRequest(http.MethodPost, "/string/hello", bytes.NewBufferString("HelloWorld"))
 	recorder := httptest.NewRecorder()
 
 	server := mux.NewRouter()
-	for _, handle := range handler.GetHandles() {
+	for _, handle := range storeHandler.GetHandles() {
 		server.HandleFunc(handle.Path, handle.Function).Methods(handle.Method)
 	}
 	server.ServeHTTP(recorder, request)
@@ -27,24 +27,24 @@ func Test_SetByStringHttpHandler(t *testing.T) {
 	value := make(map[string]string)
 	value[constant.KEY] = "hello"
 
-	assert.Equal(t, "HelloWorld", manager.Process(manager.Message{constant.GET, value}))
+	assert.Equal(t, "HelloWorld", storeManager.Process(manager.Message{constant.GET, value}))
 	assert.Equal(t, http.StatusOK, recorder.Code)
 }
 
 func Test_GetByStringHttpHandler(t *testing.T) {
-	manager := manager.NewStringStoreManager()
-	handler := NewStringHttpHandler(manager)
+	storeManager := manager.NewStringStoreManager()
+	storeHandler := NewStringHttpHandler(storeManager)
 
 	value := make(map[string]string)
 	value[constant.KEY] = "hello"
 	value[constant.VALUE] = "HelloWorld"
-	manager.Process(manager.Message{constant.SET, value})
+	storeManager.Process(manager.Message{constant.SET, value})
 
 	request, _ := http.NewRequest(http.MethodGet, "/string/hello", nil)
 	recorder := httptest.NewRecorder()
 
 	server := mux.NewRouter()
-	for _, handle := range handler.GetHandles() {
+	for _, handle := range storeHandler.GetHandles() {
 		server.HandleFunc(handle.Path, handle.Function).Methods(handle.Method)
 	}
 	server.ServeHTTP(recorder, request)
