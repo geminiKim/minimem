@@ -1,4 +1,4 @@
-package list
+package store
 
 import (
 	"github.com/geminikim/minimem/constant"

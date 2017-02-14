@@ -1,4 +1,4 @@
-package hash
+package store
 
 import "github.com/geminikim/minimem/constant"
 
