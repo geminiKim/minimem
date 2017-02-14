@@ -8,20 +8,20 @@ import (
 
 func Test_listStoreFunc(t *testing.T) {
 	store := NewListStore()
-	store.rightPush("key", "value3")
-	store.rightPush("key", "value4")
-	store.rightPush("key", "value5")
-	store.leftPush("key", "value2")
-	store.leftPush("key", "value1")
-	store.leftPush("key", "value0")
+	store.RightPush("key", "value3")
+	store.RightPush("key", "value4")
+	store.RightPush("key", "value5")
+	store.LeftPush("key", "value2")
+	store.LeftPush("key", "value1")
+	store.LeftPush("key", "value0")
 
 
-	assert.Equal(t, "value0", store.leftPeek("key"))
-	assert.Equal(t, "value5", store.rightPeek("key"))
-	assert.Equal(t, "value0", store.leftPop("key"))
-	assert.Equal(t, "value5", store.rightPop("key"))
+	assert.Equal(t, "value0", store.LeftPeek("key"))
+	assert.Equal(t, "value5", store.RightPeek("key"))
+	assert.Equal(t, "value0", store.LeftPop("key"))
+	assert.Equal(t, "value5", store.RightPop("key"))
 
-	list := store.byRange("key", 0, 2)
+	list := store.ByRange("key", 0, 2)
 
 	assert.Equal(t, "value1", list[0])
 	assert.Equal(t, "value2", list[1])
@@ -29,12 +29,12 @@ func Test_listStoreFunc(t *testing.T) {
 
 func Test_listRangeGetToString(t *testing.T) {
 	store := NewListStore()
-	store.rightPush("key", "value3")
-	store.rightPush("key", "value4")
-	store.rightPush("key", "value5")
-	store.leftPush("key", "value2")
-	store.leftPush("key", "value1")
-	store.leftPush("key", "value0")
-	assert.Equal(t, "[\"value0\",\"value1\"]", util.ToJsonString(store.byRange("key", 0, 2)))
+	store.RightPush("key", "value3")
+	store.RightPush("key", "value4")
+	store.RightPush("key", "value5")
+	store.LeftPush("key", "value2")
+	store.LeftPush("key", "value1")
+	store.LeftPush("key", "value0")
+	assert.Equal(t, "[\"value0\",\"value1\"]", util.ToJsonString(store.ByRange("key", 0, 2)))
 
 }

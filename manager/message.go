@@ -1,4 +1,4 @@
-package store
+package manager
 
 type Message struct {
 	Command string

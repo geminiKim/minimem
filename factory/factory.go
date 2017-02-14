@@ -1,27 +1,26 @@
 package factory
 
 import (
-	"github.com/geminikim/minimem/store"
-	"github.com/geminikim/minimem/store/list"
-	"github.com/geminikim/minimem/store/hash"
 	"github.com/geminikim/minimem/constant"
+	"github.com/geminikim/minimem/manager"
+	"github.com/geminikim/minimem/handler"
 )
 
-func GetManagers() []store.Manager {
-	return []store.Manager{
-		strings.NewStringStoreManager(),
-		list.NewListStoreManager(),
-		hash.NewHashStoreManager(),
+func GetManagers() []manager.Manager {
+	return []manager.Manager{
+		manager.NewStringStoreManager(),
+		manager.NewListStoreManager(),
+		manager.NewHashStoreManager(),
 	}
 }
 
-func GetHttpHandlers(managers []store.Manager) []store.HttpHandler {
-	handlers := make([]store.HttpHandler, len(managers))
+func GetHttpHandlers(managers []manager.Manager) []handler.HttpHandler {
+	handlers := make([]handler.HttpHandler, len(managers))
 	for index, manager := range managers {
 		switch manager.GetType() {
-		case constant.STRING: handlers[index] = strings.NewStringHttpHandler(manager)
-		case constant.LIST: handlers[index] = list.NewListHttpHandler(manager)
-		case constant.HASH: handlers[index] = hash.NewHashHttpHandler(manager)
+		case constant.STRING: handlers[index] = handler.NewStringHttpHandler(manager)
+		case constant.LIST: handlers[index] = handler.NewListHttpHandler(manager)
+		case constant.HASH: handlers[index] = handler.NewHashHttpHandler(manager)
 		}
 	}
 	return handlers

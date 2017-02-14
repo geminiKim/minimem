@@ -1,4 +1,4 @@
-package store
+package manager
 
 type Manager interface {
 	Process(Message) string

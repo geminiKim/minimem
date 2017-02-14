@@ -4,8 +4,8 @@ import (
 	"log"
 	"github.com/gorilla/mux"
 	"net/http"
-	"github.com/geminikim/minimem/store"
-	"github.com/geminikim/minimem/store/factory"
+	"github.com/geminikim/minimem/factory"
+	"github.com/geminikim/minimem/handler"
 )
 
 func main() {
@@ -14,7 +14,7 @@ func main() {
 
 	httpServerStart("8011", handlers)
 }
-func httpServerStart(port string, handlers []store.HttpHandler) {
+func httpServerStart(port string, handlers []handler.HttpHandler) {
 	server := mux.NewRouter()
 	for _, handler := range handlers {
 		for _, handle := range handler.GetHandles() {

@@ -8,8 +8,8 @@ import (
 
 func Test_shouldBeSuccessSetAndGetByHashStore(t *testing.T) {
 	store := NewHashStore()
-	store.set("key", "field", "value")
-	value := store.get("key","field")
+	store.Set("key", "field", "value")
+	value := store.Get("key","field")
 
 	assert.Equal(t, "value", value)
 }

@@ -1,4 +1,4 @@
-package hash
+package manager
 
 import (
 	"github.com/geminikim/minimem/constant"
@@ -13,9 +13,9 @@ func Test_SetByHashStoreManager(t *testing.T) {
 	value[constant.KEY] = "hello"
 	value[constant.FIELD] = "world"
 	value[constant.VALUE] = "HelloWorld"
-	manager.Process(store.Message{constant.GET, value})
+	manager.Process(Message{constant.GET, value})
 
-	response := manager.Process(store.Message{constant.SET, value})
+	response := manager.Process(Message{constant.SET, value})
 	assert.Equal(t, constant.OK, response)
 }
 
@@ -26,8 +26,8 @@ func Test_GetByHashStoreManager(t *testing.T) {
 	value[constant.KEY] = "hello"
 	value[constant.FIELD] = "world"
 	value[constant.VALUE] = "HelloWorld"
-	manager.Process(store.Message{constant.SET, value})
+	manager.Process(Message{constant.SET, value})
 
-	response := manager.Process(store.Message{constant.GET, value})
+	response := manager.Process(Message{constant.GET, value})
 	assert.Equal(t, "HelloWorld", response)
 }

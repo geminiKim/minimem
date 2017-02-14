@@ -2,21 +2,21 @@ package store
 
 import "github.com/geminikim/minimem/constant"
 
-type stringStore struct {
+type StringStore struct {
 	stringMap map[string]string
 }
 
-func newStringStore() *stringStore {
-	store := new(stringStore)
+func NewStringStore() *StringStore {
+	store := new(StringStore)
 	store.stringMap = make(map[string]string)
 	return store
 }
 
-func (store stringStore) set(key string, value string) string {
+func (store StringStore) Set(key string, value string) string {
 	store.stringMap[key] = value
 	return constant.OK
 }
 
-func (store stringStore) get(key string) string {
+func (store StringStore) Get(key string) string {
 	return store.stringMap[key]
 }

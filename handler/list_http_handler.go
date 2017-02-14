@@ -1,16 +1,17 @@
-package list
+package handler
 
 import (
 	"net/http"
 	"github.com/geminikim/minimem/util"
 	"github.com/geminikim/minimem/constant"
+	"github.com/geminikim/minimem/manager"
 )
 
 type ListHttpHandler struct {
-	manager store.Manager
+	manager manager.Manager
 }
 
-func NewListHttpHandler(manager store.Manager) store.HttpHandler {
+func NewListHttpHandler(manager manager.Manager) HttpHandler {
 	handler := new(ListHttpHandler)
 	handler.manager = manager
 	return handler
@@ -18,42 +19,42 @@ func NewListHttpHandler(manager store.Manager) store.HttpHandler {
 
 func (handler ListHttpHandler) LeftPush(response http.ResponseWriter, request *http.Request) {
 	value := util.GetMessageMapWithBody(request, []string{constant.KEY}, constant.VALUE)
-	result := handler.manager.Process(store.Message{constant.LEFT_PUSH, value})
+	result := handler.manager.Process(manager.Message{constant.LEFT_PUSH, value})
 	response.Write([]byte(result))
 }
 func (handler ListHttpHandler) LeftPop(response http.ResponseWriter, request *http.Request) {
 	value := util.GetMessageMap(request, []string{constant.KEY})
-	result := handler.manager.Process(store.Message{constant.LEFT_POP, value})
+	result := handler.manager.Process(manager.Message{constant.LEFT_POP, value})
 	response.Write([]byte(result))
 }
 func (handler ListHttpHandler) LeftPeek(response http.ResponseWriter, request *http.Request) {
 	value := util.GetMessageMap(request, []string{constant.KEY})
-	result := handler.manager.Process(store.Message{constant.LEFT_PEEK, value})
+	result := handler.manager.Process(manager.Message{constant.LEFT_PEEK, value})
 	response.Write([]byte(result))
 }
 func (handler ListHttpHandler) RightPush(response http.ResponseWriter, request *http.Request) {
 	value := util.GetMessageMapWithBody(request, []string{constant.KEY}, constant.VALUE)
-	result := handler.manager.Process(store.Message{constant.RIGHT_PUSH, value})
+	result := handler.manager.Process(manager.Message{constant.RIGHT_PUSH, value})
 	response.Write([]byte(result))
 }
 func (handler ListHttpHandler) RightPop(response http.ResponseWriter, request *http.Request) {
 	value := util.GetMessageMap(request, []string{constant.KEY})
-	result := handler.manager.Process(store.Message{constant.RIGHT_POP, value})
+	result := handler.manager.Process(manager.Message{constant.RIGHT_POP, value})
 	response.Write([]byte(result))
 }
 func (handler ListHttpHandler) RightPeek(response http.ResponseWriter, request *http.Request) {
 	value := util.GetMessageMap(request, []string{constant.KEY})
-	result := handler.manager.Process(store.Message{constant.RIGHT_PEEK, value})
+	result := handler.manager.Process(manager.Message{constant.RIGHT_PEEK, value})
 	response.Write([]byte(result))
 }
 func (handler ListHttpHandler) RangeGet(response http.ResponseWriter, request *http.Request) {
 	value := util.GetMessageMap(request, []string{constant.KEY,constant.INDEX,constant.COUNT})
-	result := handler.manager.Process(store.Message{constant.BY_RANGE, value})
+	result := handler.manager.Process(manager.Message{constant.BY_RANGE, value})
 	response.Write([]byte(result))
 }
 
-func (handler ListHttpHandler) GetHandles() []store.HttpHandle {
-	return []store.HttpHandle {
+func (handler ListHttpHandler) GetHandles() []HttpHandle {
+	return []HttpHandle {
 		{http.MethodPost, constant.URL_LIST_LEFT_PUSH, handler.LeftPush},
 		{http.MethodGet, constant.URL_LIST_LEFT_PEEK, handler.LeftPeek},
 		{http.MethodGet, constant.URL_LIST_LEFT_POP, handler.LeftPop},

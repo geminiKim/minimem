@@ -2,17 +2,17 @@ package store
 
 import "github.com/geminikim/minimem/constant"
 
-type hashStore struct {
+type HashStore struct {
 	hashMap map[string]map[string]string
 }
 
-func NewHashStore() *hashStore {
-	store := new(hashStore)
+func NewHashStore() *HashStore {
+	store := new(HashStore)
 	store.hashMap = make(map[string]map[string]string)
 	return store
 }
 
-func (store hashStore) set(key string, field string, value string) string {
+func (store HashStore) Set(key string, field string, value string) string {
 	if store.hashMap[key] == nil {
 		store.hashMap[key] = make(map[string]string);
 	}
@@ -20,6 +20,6 @@ func (store hashStore) set(key string, field string, value string) string {
 	return constant.OK
 }
 
-func (store hashStore) get(key string, field string) string {
+func (store HashStore) Get(key string, field string) string {
 	return store.hashMap[key][field]
 }
